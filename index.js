@@ -32,18 +32,23 @@ app.get("/api/:date?", (req, res) => {
       if (parseDate.toString() === "Invalid Date") {
         parseDate = new Date(parseInt(date));
       }
-      res.json({
+      if (parseDate.toString() === "Invalid Date") {
+        return res.json({
+          error: "Invalid Date"
+        });
+      }
+      return res.json({
         unix: parseDate[Symbol.toPrimitive]('number'),
         utc: parseDate.toUTCString()
       });
     } catch {
-      res.json({
+      return res.json({
         error: "Invalid Date"
       })
     }
   } else {
     const today = new Date();
-    res.json({
+    return res.json({
       unix: today[Symbol.toPrimitive]('number'),
       utc: today.toUTCString()
     });
